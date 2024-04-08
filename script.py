@@ -22,7 +22,7 @@ import sys
 
 DEBUG = False
 console = Console()
-headerText = "M6nMjy5THr2J"
+headerText = "M6nMjygd5Thgrr2J"
 
 
 def encrypt(key, source, encode=True):
@@ -63,18 +63,6 @@ def getPixelCount(img):
     width, height = Image.open(img).size
     return width * height
 
-def calculate_pattern_size(message_size, image_size):
-    """
-    Calculates the pattern size based on the size of the message and image.
-
-    Args:
-    - message_size: Size of the secret message in bytes.
-    - image_size: Total number of pixels in the image.
-
-    Returns:
-    - pattern_size: Size of the pattern to be used for encoding.
-    """
-    return math.ceil(message_size / image_size)
 
 def encodeImage(image, message, filename):
     with console.status("[green]Encoding image..") as status:
@@ -112,28 +100,7 @@ def encodeImage(image, message, filename):
                 current_pixel += 3
                 tmp += 1
 
-                if tmp == len(message):
-                    if three_pixels[-1] % 2 == 0:
-                        three_pixels[-1] = three_pixels[-1] - 1 if three_pixels[-1] == 255 else three_pixels[-1] + 1
-                else:
-                    if three_pixels[-1] % 2 != 0:
-                        three_pixels[-1] = three_pixels[-1] - 1 if three_pixels[-1] == 255 else three_pixels[-1] + 1
-
-                three_pixels = tuple(three_pixels)
-
-                st = 0
-                end = 3
-
-                for i in range(0, 3):
-                    image.putpixel((x, y), three_pixels[st:end])
-                    st += 3
-                    end += 3
-
-                    if (x == width - 1):
-                        x = 0
-                        y += 1
-                    else:
-                        x += 1
+               
 
             encoded_filename = filename.split('.')[0] + "-enc.png"
             image.save(encoded_filename)
@@ -180,12 +147,6 @@ def decodeImage(image):
             sys.exit()
 
 
-def print_credits():
-    table = Table(show_header=True)
-    table.add_column("Creator", style="yellow")
-    table.add_column("Contact", style="yellow")
-    table.add_row("Vandit Barola", "technovandit18@gmail.com ")
-    console.print(table)
 
 
 def main():
